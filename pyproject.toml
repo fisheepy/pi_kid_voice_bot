@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pi-kid-voice-bot"
+version = "0.2.0"
+description = "Raspberry Pi kid voice bot scaffold"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Pi Kid Voice Bot Contributors" }
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0"
+]
+voice = [
+  "SpeechRecognition>=3.10.0",
+  "pyttsx3>=2.90",
+  "PyAudio>=0.2.14"
+]
+llm = [
+  "openai>=1.30.0"
+]
+
+[project.scripts]
+pi-kid-voice-bot = "pi_kid_voice_bot.main:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = "-q"
