@@ -1,0 +1,4 @@
+# Add runtime dependencies here.
+# Example:
+# sounddevice>=0.4.7
+# openai>=1.0.0

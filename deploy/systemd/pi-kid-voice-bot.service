@@ -1,0 +1,16 @@
+[Unit]
+Description=Pi Kid Voice Bot
+After=network-online.target sound.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/projects/pi_kid_voice_bot
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/home/pi/projects/pi_kid_voice_bot/.venv/bin/pi-kid-voice-bot --device pi-01
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
