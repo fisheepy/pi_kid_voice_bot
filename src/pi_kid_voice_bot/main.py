@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import time
 
 from .voice_runtime import ConsoleTextToSpeech, EchoRuleEngine, KeyboardSpeechToText, VoiceBotRuntime
 
@@ -51,15 +52,28 @@ def run(device: str, dry_run: bool = False, mode: str = "keyboard", once: bool =
         print("Dry run enabled. Exiting without starting voice loop.")
         return 0
 
-    runtime = build_runtime(mode)
+    try:
+        runtime = build_runtime(mode)
+    except Exception as exc:
+        print(f"[error] Failed to initialize runtime in '{mode}' mode: {exc}")
+        return 1
+
     print(f"Voice runtime started in '{mode}' mode.")
 
     if once:
-        runtime.run_once()
-        return 0
+        try:
+            runtime.run_once()
+            return 0
+        except Exception as exc:
+            print(f"[error] Runtime failed in once mode: {exc}")
+            return 1
 
     while True:
-        runtime.run_once()
+        try:
+            runtime.run_once()
+        except Exception as exc:
+            print(f"[warn] Runtime loop error: {exc}")
+            time.sleep(1)
 
 
 def main() -> int:

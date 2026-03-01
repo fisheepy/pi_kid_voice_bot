@@ -48,6 +48,37 @@ pi-kid-voice-bot --mode microphone
 
 > 说明：`speech_recognition` 默认调用 Google Web Speech 进行识别，需要网络；识别失败会返回空文本并触发“请再说一遍”。
 
+## 常见问题排查
+
+- `FLAC conversion utility not available`
+  - 执行：`sudo apt install -y flac`
+- `No Default Input Device Available`
+  - 先检查：`arecord -l`
+  - 再配置默认设备（例如 WM8960 为 `card 3` 时）：
+    ```bash
+    cat > ~/.asoundrc <<'EOF'
+    pcm.!default {
+      type asym
+      playback.pcm "plughw:3,0"
+      capture.pcm "plughw:3,0"
+    }
+    ctl.!default {
+      type hw
+      card 3
+    }
+    EOF
+    ```
+- `pyttsx3` 初始化失败（缺少 `espeak-ng`）
+  - 执行：`sudo apt install -y espeak-ng`
+
+快速健康检查：
+
+```bash
+pytest -q
+pi-kid-voice-bot --mode keyboard --once --device pi-01
+pi-kid-voice-bot --mode microphone --once
+```
+
 ## 在 Raspberry Pi 上部署为系统服务
 
 先在项目目录完成安装：

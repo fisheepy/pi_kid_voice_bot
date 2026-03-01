@@ -34,3 +34,30 @@ def test_run_once_uses_runtime(monkeypatch, capsys) -> None:
     assert code == 0
     assert calls == ["run_once"]
     assert "Voice runtime started in 'keyboard' mode." in output
+
+
+def test_run_once_returns_nonzero_on_runtime_error(monkeypatch, capsys) -> None:
+    class FailingRuntime:
+        def run_once(self) -> str:
+            raise RuntimeError("boom")
+
+    monkeypatch.setattr("pi_kid_voice_bot.main.build_runtime", lambda mode: FailingRuntime())
+
+    code = run(device="pi-test", dry_run=False, mode="keyboard", once=True)
+    output = capsys.readouterr().out
+
+    assert code == 1
+    assert "[error] Runtime failed in once mode" in output
+
+
+def test_run_returns_nonzero_on_runtime_init_error(monkeypatch, capsys) -> None:
+    def _raise(mode: str):
+        raise RuntimeError("init failed")
+
+    monkeypatch.setattr("pi_kid_voice_bot.main.build_runtime", _raise)
+
+    code = run(device="pi-test", dry_run=False, mode="microphone", once=True)
+    output = capsys.readouterr().out
+
+    assert code == 1
+    assert "[error] Failed to initialize runtime" in output
