@@ -8,7 +8,7 @@ Type=simple
 User=pi
 WorkingDirectory=/home/pi/projects/pi_kid_voice_bot
 Environment=PYTHONUNBUFFERED=1
-ExecStart=/home/pi/projects/pi_kid_voice_bot/.venv/bin/pi-kid-voice-bot --device pi-01
+ExecStart=/home/pi/projects/pi_kid_voice_bot/.venv/bin/pi-kid-voice-bot --device pi-01 --mode microphone
 Restart=always
 RestartSec=3
 
