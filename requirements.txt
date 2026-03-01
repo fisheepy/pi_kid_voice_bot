@@ -1,0 +1,5 @@
+# Runtime dependencies can be managed from pyproject extras.
+# Install baseline package:
+#   pip install -e .
+# Install voice stack:
+#   pip install -e .[voice]
