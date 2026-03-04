@@ -22,6 +22,9 @@ voice = [
   "pyttsx3>=2.90",
   "PyAudio>=0.2.14"
 ]
+llm = [
+  "openai>=1.30.0"
+]
 
 [project.scripts]
 pi-kid-voice-bot = "pi_kid_voice_bot.main:main"

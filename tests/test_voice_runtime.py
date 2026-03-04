@@ -31,7 +31,8 @@ def test_runtime_runs_pipeline() -> None:
     tts = DummyTts()
     runtime = VoiceBotRuntime(stt=DummyStt("小朋友你好"), tts=tts, engine=EchoRuleEngine())
 
-    response = runtime.run_once()
+    turn = runtime.run_turn()
 
-    assert response == "我听到你说：小朋友你好"
+    assert turn.user_text == "小朋友你好"
+    assert turn.bot_text == "我听到你说：小朋友你好"
     assert tts.spoken == ["我听到你说：小朋友你好"]

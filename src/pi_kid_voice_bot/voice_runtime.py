@@ -22,6 +22,12 @@ class RuleEngine(Protocol):
 
 
 @dataclass(slots=True)
+class TurnResult:
+    user_text: str
+    bot_text: str
+
+
+@dataclass(slots=True)
 class VoiceBotRuntime:
     """Single-turn voice pipeline runtime."""
 
@@ -29,11 +35,14 @@ class VoiceBotRuntime:
     tts: TextToSpeech
     engine: RuleEngine
 
-    def run_once(self) -> str:
+    def run_turn(self) -> TurnResult:
         user_text = self.stt.listen()
         response = self.engine.reply(user_text)
         self.tts.speak(response)
-        return response
+        return TurnResult(user_text=user_text, bot_text=response)
+
+    def run_once(self) -> str:
+        return self.run_turn().bot_text
 
 
 @dataclass(slots=True)
